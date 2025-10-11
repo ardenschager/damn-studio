@@ -16,30 +16,38 @@
             background-color: #ffffff;
             color: #000000;
             line-height: 1.6;
-            padding: 2rem;
-            max-width: 800px;
+            padding: 3rem 2rem;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 4rem;
-            padding-top: 2rem;
+            margin-bottom: 5rem;
+            padding-top: 3rem;
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 5rem;
             font-weight: 300;
-            letter-spacing: 0.5rem;
-            margin-bottom: 2rem;
+            letter-spacing: 0.8rem;
+            margin-bottom: 3rem;
         }
 
         .tagline {
             font-size: 1.125rem;
             line-height: 1.8;
-            max-width: 700px;
-            margin: 0 auto 3rem;
+            max-width: 750px;
+            margin: 0 auto 4rem;
             font-weight: 300;
+        }
+
+        .kite-image {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            display: block;
+            border-radius: 8px;
         }
 
         section {
@@ -55,44 +63,35 @@
         }
 
         .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
             margin-top: 2rem;
-        }
-
-        .team-member {
-            text-align: center;
+            flex-wrap: wrap;
         }
 
         .team-member a {
             color: #000000;
             text-decoration: none;
-            font-size: 1.125rem;
-            font-weight: 400;
+            font-size: 1.25rem;
+            font-weight: 300;
             border-bottom: 1px solid transparent;
             transition: border-bottom 0.3s ease;
+            white-space: nowrap;
         }
 
         .team-member a:hover {
             border-bottom: 1px solid #000000;
         }
 
-        .questions {
-            margin: 3rem 0;
+        .under-construction {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 5rem;
+            margin-bottom: 3rem;
         }
 
-        .questions p {
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-            font-weight: 300;
-        }
-
-        .cta {
-            margin-top: 3rem;
-            font-size: 1.25rem;
-            font-weight: 400;
-        }
 
         footer {
             text-align: center;
@@ -108,12 +107,12 @@
 
         @media (max-width: 768px) {
             body {
-                padding: 1rem;
+                padding: 2rem 1rem;
             }
 
             h1 {
-                font-size: 2.5rem;
-                letter-spacing: 0.3rem;
+                font-size: 3rem;
+                letter-spacing: 0.4rem;
             }
 
             .tagline {
@@ -121,7 +120,9 @@
             }
 
             .team-grid {
-                grid-template-columns: 1fr;
+                gap: 2rem;
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
@@ -132,38 +133,29 @@
         <p class="tagline">
             DAMN is an NYC-based collective creating immersive environments. We work at the intersections of spatial design, illustration, custom fabrication, graphic design, programming and interactive media. Organized into a dynamic team with diverse professional experience, we merge our capabilities to bring creative ideas to life.
         </p>
+        <img src="/kite.jpg" alt="DAMN Collective" class="kite-image">
     </header>
 
     <section>
-        <h2>Our Team</h2>
         <div class="team-grid">
             <div class="team-member">
                 <a href="https://tsimtsum.org/" target="_blank" rel="noopener noreferrer">Daniel Toretsky</a>
             </div>
             <div class="team-member">
-                <a href="https://nicolefoxdesign.com/" target="_blank" rel="noopener noreferrer">Nicole Fox</a>
+                <a href="https://www.nan.ooo" target="_blank" rel="noopener noreferrer">Arden Schager</a>
             </div>
             <div class="team-member">
                 <a href="https://matiaspina.com/" target="_blank" rel="noopener noreferrer">Matias Pina</a>
             </div>
             <div class="team-member">
-                <a href="https://www.nan.ooo" target="_blank" rel="noopener noreferrer">Arden Schager</a>
+                <a href="https://nicolefoxdesign.com/" target="_blank" rel="noopener noreferrer">Nicole Fox</a>
             </div>
         </div>
-    </section>
-
-    <section class="questions">
-        <p>Are you planning a new museum exhibition?</p>
-        <p>Presenting your brand in a creative space?</p>
-        <p>Exploring future collaborators?</p>
-
-        <div class="cta">
-            <p>We'd love to talk next steps!</p>
-        </div>
+        <p class="under-construction">Under Construction</p>
     </section>
 
     <footer>
-        <p>&copy; 2025 DAMN Studio. New York City.</p>
+        <p>&copy; 2025 DAMN Collective. New York City.</p>
     </footer>
 </body>
 </html>
