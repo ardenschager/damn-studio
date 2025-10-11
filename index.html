@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAMN - NYC-Based Creative Collective</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-top: 2rem;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tagline {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-weight: 300;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            letter-spacing: 0.1rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-member a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 400;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom 0.3s ease;
+        }
+
+        .team-member a:hover {
+            border-bottom: 1px solid #000000;
+        }
+
+        .questions {
+            margin: 3rem 0;
+        }
+
+        .questions p {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        .cta {
+            margin-top: 3rem;
+            font-size: 1.25rem;
+            font-weight: 400;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid #000000;
+        }
+
+        footer p {
+            font-size: 0.875rem;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                letter-spacing: 0.3rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DAMN</h1>
+        <p class="tagline">
+            DAMN is an NYC-based collective creating immersive environments. We work at the intersections of spatial design, illustration, custom fabrication, graphic design, programming and interactive media. Organized into a dynamic team with diverse professional experience, we merge our capabilities to bring creative ideas to life.
+        </p>
+    </header>
+
+    <section>
+        <h2>Our Team</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <a href="https://tsimtsum.org/" target="_blank" rel="noopener noreferrer">Daniel Toretsky</a>
+            </div>
+            <div class="team-member">
+                <a href="https://nicolefoxdesign.com/" target="_blank" rel="noopener noreferrer">Nicole Fox</a>
+            </div>
+            <div class="team-member">
+                <a href="https://matiaspina.com/" target="_blank" rel="noopener noreferrer">Matias Pina</a>
+            </div>
+            <div class="team-member">
+                <a href="https://www.nan.ooo" target="_blank" rel="noopener noreferrer">Arden Schager</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="questions">
+        <p>Are you planning a new museum exhibition?</p>
+        <p>Presenting your brand in a creative space?</p>
+        <p>Exploring future collaborators?</p>
+
+        <div class="cta">
+            <p>We'd love to talk next steps!</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 DAMN Studio. New York City.</p>
+    </footer>
+</body>
+</html>
