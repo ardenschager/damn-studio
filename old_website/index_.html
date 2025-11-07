@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>damn — circles (SVG)</title>
+<style>
+  :root {
+    --bg: #1d1f20;
+    --dot: #0e0f0f;
+  }
+  html,body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Make the SVG scale responsively */
+  svg {
+    width: 90vw;
+    max-width: 1400px;
+    height: auto;
+    display: block;
+  }
+
+  circle {
+    fill: var(--dot);
+  }
+</style>
+</head>
+<body>
+
+<!-- viewBox chosen so coordinates are simple and proportional -->
+<svg id="damn-svg" viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+
+<script>
+(function () {
+  const svg = document.getElementById('damn-svg');
+
+  // Viewbox dimensions (match SVG viewBox above)
+  const VBW = 1200;
+  const VBH = 300;
+
+  // Circle radius proportional to viewbox height (scales responsively)
+  const R = VBH * 0.12;            // radius
+  const overlapFactor = 0.68;      // <1 => overlap; ~0.68 gives the dense overlap in your image
+  const STEP = R * overlapFactor;  // grid step
+
+  // Helper to place a circle at grid coords inside a letter box
+  // gridX/gridY are integers; letterOriginX is leftmost coordinate in viewBox
+  function place(cx, cy) {
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', cx.toFixed(2));
+    c.setAttribute('cy', cy.toFixed(2));
+    c.setAttribute('r', R.toFixed(2));
+    svg.appendChild(c);
+  }
+
+  // Builds coordinates for a letter using grid coordinates.
+  // letterGrid: array of [gx,gy] integers. ox = left origin, oy baseline offset
+  function drawLetter(letterGrid, ox, oy) {
+    for (const [gx, gy] of letterGrid) {
+      const cx = ox + gx * STEP;
+      const cy = oy + gy * STEP;
+      place(cx, cy);
+    }
+  }
+
+  // We'll place letters left-to-right with consistent baseline (oy)
+  const baseline = 50 + R; // top margin + radius to keep letters vertically centered-ish
+
+  // Each letter will live in a nominal grid. These arrays were constructed to
+  // match your specified counts & grouping.
+  //
+  // d: 9 circles -> two on the left, two in the middle, five making the right "stick"
+  // grid coordinates (columns left->right, rows top->bottom)
+  const D_grid = [
+    // two on the left
+    [0, 1],
+    [0, 2.5],
+    // two in the middle
+    [1, 0],
+    [1, 3],
+    // five making the stick on the right (vertical)
+    [3, 0],
+    [3, 1],
+    [3, 2],
+    [3, 3],
+    [3, -2]
+  ]; // total 9
+
+  // a: 8 circles -> two on top, two in center row (bridge), three on right stick, one little leg (bottom-right)
+  // left intentionally open (no left-side fill)
+  const A_grid = [
+    // top two
+    [1, 0],
+    [2, 0],
+    // center horizontal pieces (bridge)
+    [1, 2],
+    [2, 2],
+    // three on the right vertical stick
+    [4, 1],
+    [4, 2],
+    [4, 3],
+    // small leg - bottom-right
+    [2, 4]
+  ]; // total 8
+
+  // m: 12 dots
+  // four on the left, one joining left & center, three in center, one joining center & right, three on the right
+  const M_grid = [
+    // four on the left column
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    // joining left with center
+    [1, 1],
+    // center cluster (three)
+    [2, 0],
+    [2, 1],
+    [2, 2],
+    // joining center & right
+    [3, 1],
+    // three on the right
+    [4, 0],
+    [4, 1],
+    [4, 2]
+  ]; // total 12
+
+  // n: 8 dots -> four on left, one center, three on right
+  const N_grid = [
+    // four left
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    // single center (offset to create the diagonal feel)
+    [1, 1.5],
+    // three on the right
+    [2, 0],
+    [2, 1],
+    [2, 2]
+  ]; // total 8
+
+  // Decide horizontal origins for each letter (proportional spacing)
+  // letters widths measured in grid units. We leave extra gap between letters.
+  const letterWidthUnits = 6; // approximate units used to separate letters
+  const gapUnits = 1.4;       // extra spacer between letters
+
+  let originX = 80; // initial left margin
+
+  // Draw D
+  drawLetter(D_grid, originX, baseline);
+  originX += letterWidthUnits * STEP + gapUnits * STEP; // advance
+
+  // Draw A
+  drawLetter(A_grid, originX, baseline);
+  originX += letterWidthUnits * STEP + gapUnits * STEP;
+
+  // Draw M
+  drawLetter(M_grid, originX, baseline);
+  originX += letterWidthUnits * STEP + gapUnits * STEP;
+
+  // Draw N
+  drawLetter(N_grid, originX, baseline);
+
+  // finished
+})();
+</script>
+
+</body>
+</html>

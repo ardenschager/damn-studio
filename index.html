@@ -1,240 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAMN - NYC-Based Creative Collective</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-            position: fixed;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #000000;
-            line-height: 1.6;
-            padding: 2rem 50px 1.5rem;
-            max-width: 100%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 1rem;
-            padding-top: 0;
-            position: relative;
-            z-index: 10;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 0.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .tagline {
-            font-size: 1rem;
-            line-height: 1.4;
-            max-width: 750px;
-            margin: 0 auto 1.5rem;
-            font-weight: 400;
-            color: #333;
-        }
-
-        .image-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto 1rem;
-            flex: 1 1 auto;
-            display: flex;
-            align-items: center;
-            z-index: 1;
-        }
-
-        .kite-image {
-            width: 100%;
-            max-height: 60vh;
-            object-fit: contain;
-            display: block;
-            transform: scale(1.35);
-        }
-
-        .team-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 70%;
-            pointer-events: none;
-        }
-
-        .team-member {
-            position: absolute;
-            pointer-events: auto;
-        }
-
-        .team-member a {
-            color: #666;
-            text-decoration: none;
-            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-            font-weight: 400;
-            border-bottom: 1px solid transparent;
-            transition: border-bottom 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .team-member a:hover {
-            border-bottom: 1px solid #666;
-        }
-
-        /* Triangle formation: Arden at top (bridge), Daniel left, Matias middle-left, Nicole right */
-        /* Positioned relative to the visible kite structure */
-        .team-arden {
-            top: -15%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .team-daniel {
-            top: 14%;
-            left: 8%;
-        }
-
-        .team-matias {
-            top: -5%;
-            left: 24%;
-        }
-
-        .team-nicole {
-            top: 15%;
-            right: 20%;
-        }
-
-        footer {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 2rem;
-            padding: 0.5rem 0 1.5rem 0;
-            margin: 0 auto;
-            max-width: 1200px;
-            position: relative;
-            z-index: 10;
-            background-color: #ffffff;
-        }
-
-        footer p {
-            font-size: 0.75rem;
-            font-weight: 300;
-            line-height: 1.6;
-            color: #666;
-            margin: 0;
-            flex: 0 1 800px;
-        }
-
-        .logo {
-            flex-shrink: 0;
-            height: auto;
-            width: 120px;
-            object-fit: contain;
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .tagline {
-                font-size: 0.9rem;
-            }
-
-            .team-member a {
-                font-size: 0.7rem;
-            }
-
-            /* Adjust team member positions for mobile to prevent cutting into drawing */
-            .team-arden {
-                top: -15%;
-            }
-
-            .team-daniel {
-                top: 10%;
-            }
-
-            .team-matias {
-                top: -2%;
-            }
-
-            .team-nicole {
-                top: 10%;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 1rem;
-                max-width: 100%;
-            }
-
-            footer p {
-                font-size: 0.7rem;
-            }
-
-            .logo {
-                max-width: 80px;
-                align-self: flex-start;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>DAMN!</h1>
-        <p class="tagline">
-            Our website is under construction. Come back for more soon!
-        </p>
-    </header>
-
-    <section class="image-container">
-        <img src="/damn-construction.jpg" alt="DAMN Collective" class="kite-image">
-        <div class="team-overlay">
-            <div class="team-member team-daniel">
-                <a href="https://tsimtsum.org/" target="_blank" rel="noopener noreferrer">Daniel Toretsky</a>
-            </div>
-            <div class="team-member team-matias">
-                <a href="https://matiaspina.com/" target="_blank" rel="noopener noreferrer">Matias Pina</a>
-            </div>
-            <div class="team-member team-arden">
-                <a href="https://www.nan.ooo" target="_blank" rel="noopener noreferrer">Arden Schager</a>
-            </div>
-            <div class="team-member team-nicole">
-                <a href="https://nicolefoxdesign.com/" target="_blank" rel="noopener noreferrer">Nicole Fox</a>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll Animation</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="assets/img01.jpg">
+    <link rel="preload" as="image" href="assets/img02.jpg">
+    <link rel="preload" as="image" href="assets/img03.jpg">
+    <link rel="preload" as="image" href="assets/damn_logo.png">
+  </head>
+  <body>
+    <!-- Logo container moved outside spotlight for proper fixed positioning -->
+    <div class="logo-container">
+      <img src="assets/damn_logo.png" alt="DAMN Studio" class="animated-logo" />
+    </div>
+    
+    <section class="intro">
+    </section>
+    <section class="about-intro">
+      <div class="about-intro-container">
+        <p class="about-intro-text">DAMN is an NYC-based collective creating immersive environments.</p>
+        <p class="about-intro-text">We work at the intersections of spatial design, illustration, custom fabrication, graphic design and interactive media.</p>
+        <p class="about-intro-text">Organized into a dynamic team with diverse professional experience, we merge our capabilities to bring creative ideas to life.</p>
+      </div>
+    </section>
+    
+    <section class="spotlight">
+      <!-- Section headline inside spotlight (stays pinned) -->
+      <div class="section-headline">
+        <div class="section-headline-container">
+          <h1 class="section-headline-text">Our team has worked with:</h1>
         </div>
+      </div>
+      
+      <div class="spotlight-content">
+        <!-- Spotlight Row: Two Columns -->
+        <div class="spotlight-row">
+          <div class="spotlight-titles"></div>
+
+          <div class="preview-container">
+            <div class="preview-img">
+              <img src="" alt="Project preview" />
+            </div>
+            <div class="preview-text">
+              <div class="preview-title"></div>
+              <div class="preview-description"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <footer>
-        <p>DAMN is an NYC-based collective creating immersive environments. We work at the intersections of spatial design, illustration, custom fabrication, graphic design, programming and interactive media. Organized into a dynamic team with diverse professional experience, we merge our capabilities to bring creative ideas to life.</p>
-        <img src="/logo.png" alt="DAMN" class="logo">
-    </footer>
-</body>
+    <section class="about">
+      <h2>About us</h2>
+      <div class="team-grid">
+        <a href="https://tsimtsum.org/" target="_blank" rel="noopener noreferrer" class="team-member-link">
+          <div class="team-member">
+            <div class="member-img">
+              <img src="assets/headshots/daniel.jpg" alt="Daniel Toretski" />
+            </div>
+            <div class="member-info">
+              <h3>Daniel Toretski</h3>
+              <h4>Creative Direction</h4>
+              <p>Exhibit designer, artist, and architect with a BArch from Cornell and MFA from Parsons, where he now teaches. Passionate about storytelling through accessible exhibits, projected media, and coordinated fabrication.</p>
+            </div>
+          </div>
+        </a>
+        <a href="https://nicolefoxdesign.com/" target="_blank" rel="noopener noreferrer" class="team-member-link">
+          <div class="team-member">
+            <div class="member-img">
+              <img src="assets/headshots/nicole_fox.jpg" alt="Nicole Fox" />
+            </div>
+            <div class="member-info">
+              <h3>Nicole Fox</h3>
+              <h4>Illustration and Design</h4>
+              <p>Graphic designer specializing in exhibition graphics, branding, and interactive experiences. Currently on the in-house design team at AMNH, bringing complex and scientifically accurate stories to life.</p>
+            </div>
+          </div>
+        </a>
+        <a href="https://matiaspina.com/" target="_blank" rel="noopener noreferrer" class="team-member-link">
+          <div class="team-member">
+            <div class="member-img">
+              <img src="assets/headshots/matias.JPG" alt="Matías Piña" />
+            </div>
+            <div class="member-info">
+              <h3>Matías Piña</h3>
+              <h4>Interactive Media</h4>
+              <p>Creative technologist and data scientist exploring technology as a creative medium. Holds an MSc in Computer Science and MFA from Parsons. Focuses on creating interactive experiences that bridge physical and digital worlds.</p>
+            </div>
+          </div>
+        </a>
+        <a href="https://www.nan.ooo/" target="_blank" rel="noopener noreferrer" class="team-member-link">
+          <div class="team-member">
+            <div class="member-img">
+              <img src="assets/headshots/arden.jpg" alt="Arden Schager" />
+            </div>
+            <div class="member-info">
+              <h3>Arden Schager</h3>
+              <h4>Software and Sound</h4>
+              <p>Creative technologist with a BS from Stanford and MFA from Parsons, where he teaches creative coding. Previously at TikTok and Snap, currently at Google's Creative Lab working with emerging technology.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="outro">
+      <h1>Are you planning a new museum exhibition? 
+        Presenting your brand in a creative space?
+        Exploring future collaborators?</h1>
+      <h1>We’d love to talk! <a href="mailto:hello@damnstudio.co" class="email-link">hello@damnstudio.co</a></h1>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="config.js"></script>
+    <script src="utils.js"></script>
+    <script src="main.js"></script>
+  </body>
 </html>
