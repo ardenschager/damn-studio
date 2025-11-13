@@ -234,11 +234,11 @@ section.outro {
 
 .preview-img {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 600px;
+    height: 400px;
     max-width: 600px;
     overflow: hidden;
-    border-radius: 50%;
+    border-radius: 10px;
     margin-bottom: 1rem;
     background-color: #000;
     will-change: width, height, border-radius;
@@ -263,6 +263,7 @@ section.outro {
     text-align: left;
     opacity: 0;
     will-change: opacity;
+    min-height: 120px; /* Reserve space for 3 lines of text to prevent jitter */
 }
 
 .preview-title {
@@ -278,7 +279,7 @@ section.outro {
     padding: 0 2rem 8rem 2rem;
     width: 100%;
     background-color: #f0f0f0;
-    margin-top: -50vh; /* Pull About Us section up to reduce gap after spotlight */
+    margin-top: -35vh; /* Pull About Us section up slightly, but not too much */
 }
 
 .about h2 {

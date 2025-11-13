@@ -13,7 +13,7 @@ const CONFIG = {
     arcStartOffsetY: 200,     // Distance below viewport
     arcEndOffsetY: 200,       // Distance above viewport
     // Spotlight section extension
-    sectionExtension: 0.0,    // Extra scroll height after last item (multiplied by viewport height)
+    sectionExtension: 0.35,    // Extra scroll height after last item (multiplied by viewport height) - increased for exit animation
     // Headline fade threshold
     headlineFadeStart: 0.05,  // Progress at which headline starts fading
     headlineFadeEnd: 100      // Pixels of scroll before headline fully fades

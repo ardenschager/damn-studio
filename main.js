@@ -266,25 +266,39 @@ function handleCircleMorph(progress) {
   // EXIT TIMING: Adjust these values to control when exit animation happens
   // exitMorphStart: Offset from last item end (negative = earlier, 0 = right after)
   // exitMorphDuration: How long the exit lasts
-  const exitMorphStart = lastItemEndProgress - 0.15; // Start well before last item completes
-  const exitMorphDuration = 0.35;
+  const exitMorphStart = lastItemEndProgress - 0.05; // Start slightly before last item completes
+  const exitMorphDuration = 0.4; // Slower exit
   const exitMorphProgress = progress >= exitMorphStart ?
     Math.min((progress - exitMorphStart) / exitMorphDuration, 1) : 0;
-  
+
   // Handle exit animation (reverse of entry)
   if (exitMorphProgress > 0) {
     handleCircleExit(exitMorphProgress, previewImg, previewText, previewContainer);
     return;
   }
-  
+
+  // Hide everything before animation starts
+  if (progress < entryMorphStart) {
+    gsap.set(previewContainer, { opacity: 0 });
+    gsap.set(previewImg, { opacity: 0 });
+    gsap.set(previewText, { opacity: 0 });
+    return;
+  }
+
+  // After entry animation completes, let the preview pane handle visibility
+  if (entryMorphProgress >= 1) {
+    return; // Don't interfere with preview pane logic
+  }
+
   // Phase 1: Circle entry and positioning (0 to 0.5 of morph, extended from 0.4)
   if (entryMorphProgress <= 0.5) {
     const entryProgress = entryMorphProgress / 0.5;
 
     // Simple right-to-left movement
-    // Start position: right edge of container
+    // Start position: offscreen to the right
     // End position: centered in preview-container
-    const startX = (window.innerWidth * 0.5) - 100; // Start from right edge
+    // Container is already centered, so we move it relative to center
+    const startX = window.innerWidth * 0.6; // Start offscreen right
     const endX = 0; // End at center
     const endY = 0; // Stays vertically centered
 
@@ -299,37 +313,32 @@ function handleCircleMorph(progress) {
 
     gsap.set(previewContainer, {
       y: currentY,
-      x: currentX
+      x: currentX,
+      opacity: 1 // Make container visible
     });
 
-    // Keep as circle
-    // Fade in the black circle as it flies in from the right
-    // Circle fades in from 0% to 20% of entry animation
-    let circleFrameOpacity = 0;
-    if (entryProgress > 0) {
-      circleFrameOpacity = Math.min(entryProgress / 0.2, 1);
-    }
-
+    // Keep as circle, always visible so it flies in from right
     gsap.set(previewImg, {
       width: '100px',
       height: '100px',
       borderRadius: '50%',
-      opacity: circleFrameOpacity
+      opacity: 1
     });
 
     // Image and text stay hidden
     gsap.set(previewImg.querySelector('img'), { opacity: 0 });
     gsap.set(previewText, { opacity: 0 });
-    
+
   }
   // Phase 2: Circle locked, morph to rectangle (0.5 to 1.0 of morph, adjusted from 0.4)
   else {
     const morphShapeProgress = (entryMorphProgress - 0.5) / 0.5;
-    
+
     // Lock position at center
     gsap.set(previewContainer, {
       y: 0,
-      x: 0
+      x: 0,
+      opacity: 1 // Keep container visible
     });
     
     // Morph dimensions
@@ -414,13 +423,14 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
       borderRadius: `${currentBorderRadius}%`
     });
   }
-  // Phase 2: Move circle right and exit (0.5 to 1.0, extended from 0.6)
+  // Phase 2: Move circle right and exit (0.6 to 1.0)
   else {
-    const exitMoveProgress = (exitProgress - 0.5) / 0.5;
+    const exitMoveProgress = (exitProgress - 0.6) / 0.4;
 
     // Simple left-to-right exit
     const startX = 0; // Start at center
-    const endX = (window.innerWidth * 0.5) - 100; // Exit to right edge
+    // Container is already centered, so we move it relative to center
+    const endX = window.innerWidth * 0.6; // Exit offscreen right
     const endY = 0; // Stay vertically centered
 
     // Smooth cubic easing for more deliberate movement
@@ -434,16 +444,18 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
 
     gsap.set(previewContainer, {
       y: currentY,
-      x: currentX
+      x: currentX,
+      opacity: 1 // Keep visible during exit
     });
-    
+
     // Stay as circle
     gsap.set(previewImg, {
       width: '100px',
       height: '100px',
-      borderRadius: '50%'
+      borderRadius: '50%',
+      opacity: 1 // Keep circle visible during exit
     });
-    
+
     // Keep everything hidden
     gsap.set(previewImg.querySelector('img'), { opacity: 0 });
     gsap.set(previewText, { opacity: 0 });
