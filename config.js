@@ -64,26 +64,26 @@ const SPOTLIGHT_ITEMS = [
   {
     name: "MIT Museum",
     img: "assets/img01.jpg",
-    description: "A stunning visual exploration of modern architecture.",
+    description: "Developed spatial and interactive systems for exhibitions exploring MIT's history of innovation, from adaptive artifact displays to large-scale media installations.",
   },
   {
     name: "Inter NYC",
     img: "assets/img02.jpg",
-    description: "An interactive data visualization for a leading tech company.",
+    description: "Designed and developed interactive installations where visitors shape constellations and influence the life and death of stars through movement, transforming cosmic phenomena into responsive, participatory experiences.",
   },
   {
     name: "AMNH",
     img: "assets/img03.jpg",
-    description: "A bold and immersive brand experience for a fashion label.",
-  },
-  {
-    name: "BRIC",
-    img: "assets/img02.jpg", // Reusing img02 for now
-    description: "A minimalist and elegant e-commerce platform.",
+    description: "Through exhibition design, visual identity, and spatial graphics, we've helped shape immersive experiences that connect visitors to stories of nature, culture, and technology with clarity and emotional depth.",
   },
   {
     name: "Grey Area",
     img: "assets/img03.jpg", // Reusing img03 for now
-    description: "A playful and engaging campaign for a new mobile app.",
+    description: "Created an immersive installation and web piece where visitors encounter bioluminescent beings communicating through shifting light patterns, transforming the uncertainty of translation into a space of curiosity and wonder.",
+  },
+  {
+    name: "Microsoft Garage",
+    img: "assets/img02.jpg", // Reusing img02 for now
+    description: "Created an interactive installation where visitors explore shifting AI-generated landscapes that reflect on extraction, displacement, and the fading of cultural specificity through distance and transformation.",
   }
 ];

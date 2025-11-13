@@ -301,14 +301,22 @@ function handleCircleMorph(progress) {
       y: currentY,
       x: currentX
     });
-    
+
     // Keep as circle
+    // Fade in the black circle as it flies in from the right
+    // Circle fades in from 0% to 20% of entry animation
+    let circleFrameOpacity = 0;
+    if (entryProgress > 0) {
+      circleFrameOpacity = Math.min(entryProgress / 0.2, 1);
+    }
+
     gsap.set(previewImg, {
       width: '100px',
       height: '100px',
-      borderRadius: '50%'
+      borderRadius: '50%',
+      opacity: circleFrameOpacity
     });
-    
+
     // Image and text stay hidden
     gsap.set(previewImg.querySelector('img'), { opacity: 0 });
     gsap.set(previewText, { opacity: 0 });
