@@ -278,6 +278,7 @@ section.outro {
     padding: 0 2rem 8rem 2rem;
     width: 100%;
     background-color: #f0f0f0;
+    margin-top: -50vh; /* Pull About Us section up to reduce gap after spotlight */
 }
 
 .about h2 {

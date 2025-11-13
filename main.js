@@ -31,13 +31,67 @@ function initializeDOMElements() {
 }
 
 function initializeSmoothScrolling() {
-  state.lenis = new Lenis();
+  state.lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smooth: true
+  });
+
   state.lenis.on('scroll', ScrollTrigger.update);
-  
+
   gsap.ticker.add((time) => {
     state.lenis.raf(time * 1000);
   });
   gsap.ticker.lagSmoothing(0);
+
+  // Add custom snap behavior for spotlight section
+  let scrollStopTimer = null;
+  let lastVelocity = 0;
+
+  state.lenis.on('scroll', (e) => {
+    lastVelocity = Math.abs(e.velocity);
+
+    // Clear existing timer
+    if (scrollStopTimer) {
+      clearTimeout(scrollStopTimer);
+    }
+
+    // Set timer to detect when scrolling has stopped
+    scrollStopTimer = setTimeout(() => {
+      // Check if we're in the spotlight section
+      const spotlightSection = document.querySelector('.spotlight');
+      const rect = spotlightSection.getBoundingClientRect();
+
+      // Only snap if spotlight is visible and velocity is low
+      if (rect.top <= 0 && rect.bottom > window.innerHeight && lastVelocity < 0.1) {
+        snapToNearestVenue();
+      }
+    }, 150);
+  });
+}
+
+// Snap to nearest venue function
+function snapToNearestVenue() {
+  const scrollTriggers = ScrollTrigger.getAll();
+  const spotlightTrigger = scrollTriggers.find(st => st.vars.trigger === '.spotlight');
+
+  if (!spotlightTrigger) return;
+
+  const progress = spotlightTrigger.progress;
+  const snapInterval = 1 / SPOTLIGHT_ITEMS.length;
+  const targetProgress = Math.round(progress / snapInterval) * snapInterval;
+
+  // Calculate target scroll position
+  const scrollStart = spotlightTrigger.start;
+  const scrollEnd = spotlightTrigger.end;
+  const scrollRange = scrollEnd - scrollStart;
+  const targetScroll = scrollStart + (targetProgress * scrollRange);
+
+  // Smoothly scroll to target
+  state.lenis.scrollTo(targetScroll, {
+    duration: 0.5,
+    easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+  });
 }
 
 // ============================================
@@ -74,10 +128,10 @@ function createSpotlightAnimation() {
     start: 'top top',
     end: () => {
       // Calculate end based on when last item completes its animation
-      // Multiply by 3 to slow down the scroll animation (more scroll = slower perceived animation)
+      // Multiply by 1.5 to control scroll speed (lower = faster scroll, less distance)
       const lastItemStart = (SPOTLIGHT_ITEMS.length - 1) * CONFIG.animation.gap;
       const lastItemEnd = lastItemStart + CONFIG.animation.speed;
-      const scrollHeight = window.innerHeight * (lastItemEnd + CONFIG.animation.sectionExtension) * 3;
+      const scrollHeight = window.innerHeight * (lastItemEnd + CONFIG.animation.sectionExtension) * 1.5;
       return `+=${scrollHeight}px`;
     },
     pin: true,
@@ -197,18 +251,24 @@ function handleCircleMorph(progress) {
   const previewText = document.querySelector('.preview-text');
   const previewContainer = document.querySelector('.preview-container');
   
-  // Entry morph happens in first 15% of total spotlight scroll
-  const entryMorphDuration = 0.15;
-  const entryMorphProgress = Math.min(progress / entryMorphDuration, 1);
-  
-  // Calculate when last spotlight item (Grey Area, index 4) completes
-  // Last item starts at: 4 * 0.08 = 0.32, ends at: 0.32 + 0.3 = 0.62
+  // ENTRY TIMING: Adjust these values to control when entry animation happens
+  // entryMorphStart: When to start (0 = immediately, negative = before spotlight pins)
+  // entryMorphDuration: How long the entry lasts (0.25 = 25% of scroll)
+  const entryMorphStart = -0.15; // Start well before spotlight section pins
+  const entryMorphDuration = 0.3;
+  const entryMorphProgress = progress >= entryMorphStart
+    ? Math.min((progress - entryMorphStart) / entryMorphDuration, 1)
+    : 0;
+
+  // Calculate when last spotlight item completes
   const lastItemEndProgress = (SPOTLIGHT_ITEMS.length - 1) * CONFIG.animation.gap + CONFIG.animation.speed;
-  
-  // Exit morph starts right after last item completes
-  const exitMorphStart = lastItemEndProgress;
-  const exitMorphDuration = 0.25; // Duration for the exit animation
-  const exitMorphProgress = progress >= exitMorphStart ? 
+
+  // EXIT TIMING: Adjust these values to control when exit animation happens
+  // exitMorphStart: Offset from last item end (negative = earlier, 0 = right after)
+  // exitMorphDuration: How long the exit lasts
+  const exitMorphStart = lastItemEndProgress - 0.15; // Start well before last item completes
+  const exitMorphDuration = 0.35;
+  const exitMorphProgress = progress >= exitMorphStart ?
     Math.min((progress - exitMorphStart) / exitMorphDuration, 1) : 0;
   
   // Handle exit animation (reverse of entry)
@@ -217,56 +277,26 @@ function handleCircleMorph(progress) {
     return;
   }
   
-  // Phase 1: Circle entry and positioning (0 to 0.4 of morph)
-  if (entryMorphProgress <= 0.4) {
-    const entryProgress = entryMorphProgress / 0.4;
-    
-    // Move circle from bottom-right corner to center position with complex organic movement
-    // Start position: bottom right corner (accounting for circle size)
+  // Phase 1: Circle entry and positioning (0 to 0.5 of morph, extended from 0.4)
+  if (entryMorphProgress <= 0.5) {
+    const entryProgress = entryMorphProgress / 0.5;
+
+    // Simple right-to-left movement
+    // Start position: right edge of container
     // End position: centered in preview-container
-    const circleSize = 100; // px
-    const startY = window.innerHeight - circleSize - 20; // 20px padding from bottom
-    const startX = (window.innerWidth * 0.5) - circleSize - 20; // 20px padding from right edge of container
-    const endY = 0;
-    const endX = 0;
-    
-    // Create complex organic path with multiple control points
-    const controlX1 = startX - 200; // Strong leftward movement
-    const controlY1 = startY * 0.5; // Rise up
-    const controlX2 = endX - 120; // Continue left
-    const controlY2 = endY + 60; // Overshoot downward
-    
-    // Base cubic bezier path
+    const startX = (window.innerWidth * 0.5) - 100; // Start from right edge
+    const endX = 0; // End at center
+    const endY = 0; // Stays vertically centered
+
+    // Smooth cubic easing for more deliberate movement
     const t = entryProgress;
-    const baseX = Math.pow(1-t, 3) * startX + 
-                  3 * Math.pow(1-t, 2) * t * controlX1 + 
-                  3 * (1-t) * Math.pow(t, 2) * controlX2 + 
-                  Math.pow(t, 3) * endX;
-    
-    const baseY = Math.pow(1-t, 3) * startY + 
-                  3 * Math.pow(1-t, 2) * t * controlY1 + 
-                  3 * (1-t) * Math.pow(t, 2) * controlY2 + 
-                  Math.pow(t, 3) * endY;
-    
-    // Add wave-like oscillations for organic swimming motion
-    // Multiple sine waves with different frequencies create complex movement
-    const wave1X = Math.sin(t * Math.PI * 3) * 120 * (1 - t); // Strong horizontal wave
-    const wave1Y = Math.cos(t * Math.PI * 2.5) * 80 * (1 - t * 0.5); // Vertical wave
-    
-    const wave2X = Math.sin(t * Math.PI * 5) * 60 * Math.sin(t * Math.PI * 0.5); // Secondary X oscillation
-    const wave2Y = Math.cos(t * Math.PI * 4) * 50 * t * (1 - t); // Secondary Y oscillation
-    
-    const wave3X = Math.sin(t * Math.PI * 7) * 30 * (1 - t * t); // Fine horizontal detail
-    const wave3Y = Math.sin(t * Math.PI * 6) * 25 * Math.sin(t * Math.PI); // Fine vertical detail
-    
-    // Add large S-curve component for dramatic swooping
-    const sCurveX = Math.sin(t * Math.PI) * 100 * t * (1 - t); // S-shaped horizontal movement
-    const sCurveY = Math.cos(t * Math.PI * 1.5) * 60 * t; // Complementary vertical movement
-    
-    // Combine all movements
-    const currentX = baseX + wave1X + wave2X + wave3X + sCurveX;
-    const currentY = baseY + wave1Y + wave2Y + wave3Y + sCurveY;
-    
+    const eased = t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2; // Ease in-out cubic (slower, smoother)
+
+    const currentX = startX + (endX - startX) * eased;
+    const currentY = endY;
+
     gsap.set(previewContainer, {
       y: currentY,
       x: currentX
@@ -284,9 +314,9 @@ function handleCircleMorph(progress) {
     gsap.set(previewText, { opacity: 0 });
     
   }
-  // Phase 2: Circle locked, morph to rectangle (0.4 to 1.0 of morph)
+  // Phase 2: Circle locked, morph to rectangle (0.5 to 1.0 of morph, adjusted from 0.4)
   else {
-    const morphShapeProgress = (entryMorphProgress - 0.4) / 0.6;
+    const morphShapeProgress = (entryMorphProgress - 0.5) / 0.5;
     
     // Lock position at center
     gsap.set(previewContainer, {
@@ -376,55 +406,24 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
       borderRadius: `${currentBorderRadius}%`
     });
   }
-  // Phase 2: Move circle to bottom-right and exit (0.6 to 1.0)
+  // Phase 2: Move circle right and exit (0.5 to 1.0, extended from 0.6)
   else {
-    const exitMoveProgress = (exitProgress - 0.6) / 0.4;
-    
-    // Move from center to bottom-right corner with complex organic movement
-    const circleSize = 100;
-    const startY = 0;
-    const startX = 0;
-    const endY = window.innerHeight - circleSize - 20;
-    const endX = (window.innerWidth * 0.5) - circleSize - 20;
-    
-    // Create complex organic path with multiple control points
-    const controlX1 = startX - 120; // Move left and down
-    const controlY1 = startY + 80; // Initial drop
-    const controlX2 = endX - 180; // Arc outward strongly
-    const controlY2 = endY * 0.55; // Mid-descent
-    
-    // Base cubic bezier path
+    const exitMoveProgress = (exitProgress - 0.5) / 0.5;
+
+    // Simple left-to-right exit
+    const startX = 0; // Start at center
+    const endX = (window.innerWidth * 0.5) - 100; // Exit to right edge
+    const endY = 0; // Stay vertically centered
+
+    // Smooth cubic easing for more deliberate movement
     const t = exitMoveProgress;
-    const baseX = Math.pow(1-t, 3) * startX + 
-                  3 * Math.pow(1-t, 2) * t * controlX1 + 
-                  3 * (1-t) * Math.pow(t, 2) * controlX2 + 
-                  Math.pow(t, 3) * endX;
-    
-    const baseY = Math.pow(1-t, 3) * startY + 
-                  3 * Math.pow(1-t, 2) * t * controlY1 + 
-                  3 * (1-t) * Math.pow(t, 2) * controlY2 + 
-                  Math.pow(t, 3) * endY;
-    
-    // Add wave-like oscillations for organic swimming motion (exit)
-    // Different wave patterns than entry for varied movement
-    const wave1X = Math.cos(t * Math.PI * 3) * 100 * t; // Growing horizontal wave
-    const wave1Y = Math.sin(t * Math.PI * 2.5) * 90 * (1 - Math.pow(1 - t, 2)); // Accelerating vertical wave
-    
-    const wave2X = Math.sin(t * Math.PI * 4.5) * 70 * Math.cos(t * Math.PI * 0.5); // Mid-range X oscillation
-    const wave2Y = Math.cos(t * Math.PI * 5) * 55 * t * (1 - t * 0.5); // Mid-range Y oscillation
-    
-    const wave3X = Math.cos(t * Math.PI * 6.5) * 35 * t; // Fine horizontal adjustment
-    const wave3Y = Math.sin(t * Math.PI * 7) * 30 * Math.cos(t * Math.PI); // Fine vertical detail
-    
-    // Add spiral-like motion component for dramatic exit
-    const spiralOffset = Math.sin(t * Math.PI) * t; // Grows throughout exit
-    const spiralX = Math.sin(t * Math.PI * 4) * 80 * spiralOffset; // Large spiral X
-    const spiralY = Math.cos(t * Math.PI * 3.5) * 65 * spiralOffset; // Large spiral Y
-    
-    // Combine all movements
-    const currentX = baseX + wave1X + wave2X + wave3X + spiralX;
-    const currentY = baseY + wave1Y + wave2Y + wave3Y + spiralY;
-    
+    const eased = t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2; // Ease in-out cubic (slower, smoother)
+
+    const currentX = startX + (endX - startX) * eased;
+    const currentY = endY;
+
     gsap.set(previewContainer, {
       y: currentY,
       x: currentX

@@ -1,0 +1,12 @@
+{
+  "name": "damn-studio",
+  "version": "1.0.0",
+  "description": "DAMN Studio website",
+  "scripts": {
+    "optimize": "bash optimize-images.sh && bash replace-images.sh",
+    "optimize:dry-run": "bash optimize-images.sh"
+  },
+  "keywords": ["website", "portfolio"],
+  "author": "DAMN Studio",
+  "license": "UNLICENSED"
+}

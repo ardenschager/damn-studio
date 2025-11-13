@@ -5,7 +5,7 @@
 const CONFIG = {
   // Animation settings
   animation: {
-    gap: 0.08,
+    gap: 0.12,
     speed: 0.3,
     arcRadius: 500,
     // Bezier curve positioning offsets
