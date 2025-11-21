@@ -636,9 +636,10 @@ function createSectionHeadlineAnimation() {
 // Logo Animation
 // ============================================
 function initializeLogoAnimation() {
-  const initialLogoWidth = CONFIG.logo.initialWidth;
+  // Get actual rendered width (respects CSS max-width constraint for mobile)
+  const initialLogoWidth = elements.animatedLogo.getBoundingClientRect().width;
   const finalLogoWidth = getResponsiveValue(
-    CONFIG.logo.finalWidthDesktop, 
+    CONFIG.logo.finalWidthDesktop,
     CONFIG.logo.finalWidthMobile,
     CONFIG.logo.finalWidthTablet
   );

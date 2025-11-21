@@ -145,6 +145,7 @@ section.outro {
 
 .animated-logo {
     width: 1000px;
+    max-width: 90vw; /* Ensure it fits on smaller screens */
     height: auto;
     will-change: transform;
     transform-origin: top left;
@@ -190,18 +191,21 @@ section.outro {
 @media (max-width: 1024px) {
     .animated-logo {
         width: 800px;
+        max-width: 85vw;
     }
 }
 
 @media (max-width: 768px) {
     .animated-logo {
         width: 640px;
+        max-width: 85vw;
     }
 }
 
 @media (max-width: 480px) {
     .animated-logo {
         width: 520px;
+        max-width: 90vw; /* More generous on small mobile */
     }
 }
 
