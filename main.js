@@ -295,8 +295,25 @@ function handleCircleMorph(progress) {
     return;
   }
 
-  // After entry animation completes, let the preview pane handle visibility
+  // After entry animation completes, ensure images are visible (handles reverse scroll)
   if (entryMorphProgress >= 1) {
+    // Make sure everything is visible when in normal viewing range
+    // This is crucial for when scrolling back up after exit animation
+    gsap.set(previewContainer, { opacity: 1, x: 0, y: 0 });
+    gsap.set(previewImg, {
+      width: '600px',
+      height: '400px',
+      borderRadius: '1.67%',
+      opacity: 1,
+      backgroundColor: '#000'
+    });
+    gsap.set(previewImg.querySelector('img'), {
+      opacity: 1,
+      width: '600px',
+      height: '400px',
+      borderRadius: '1.67%'
+    });
+    gsap.set(previewText, { opacity: 1 });
     return; // Don't interfere with preview pane logic
   }
 
