@@ -6,6 +6,16 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ============================================
+// Reset scroll position on page load/refresh
+// ============================================
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.addEventListener('beforeunload', () => {
+  window.scrollTo(0, 0);
+});
+
+// ============================================
 // DOM Elements & State
 // ============================================
 let elements = {};
@@ -328,7 +338,8 @@ function handleCircleMorph(progress) {
       width: '100px',
       height: '100px',
       borderRadius: '50%',
-      opacity: fadeInProgress // Quick fade in at end of Phase 1
+      opacity: fadeInProgress, // Quick fade in at end of Phase 1
+      backgroundColor: '#f0f0f0' // Match page background when dot
     });
 
     // Image and text stay hidden
@@ -358,13 +369,14 @@ function handleCircleMorph(progress) {
     
     // Morph border radius (50% to 10px)
     const currentBorderRadius = gsap.utils.interpolate(50, 1.67, morphShapeProgress); // 10px / 600px * 100 = 1.67%
-    
+
     gsap.set(previewImg, {
       width: `${currentWidth}px`,
       height: `${currentHeight}px`,
-      borderRadius: `${currentBorderRadius}%`
+      borderRadius: `${currentBorderRadius}%`,
+      backgroundColor: '#000' // Black background when showing image
     });
-    
+
     // Reveal image as shape morphs and scale it to match container
     const imageOpacity = morphShapeProgress;
     gsap.set(previewImg.querySelector('img'), { 
@@ -417,9 +429,10 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
     gsap.set(previewImg, {
       width: `${currentWidth}px`,
       height: `${currentHeight}px`,
-      borderRadius: `${currentBorderRadius}%`
+      borderRadius: `${currentBorderRadius}%`,
+      backgroundColor: morphShapeProgress > 0.5 ? '#f0f0f0' : '#000' // Fade to page bg as it becomes circle
     });
-    
+
     // Fade out image as shape morphs back and scale it down
     const imageOpacity = 1 - morphShapeProgress;
     gsap.set(previewImg.querySelector('img'), { 
@@ -448,7 +461,8 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
       width: '100px',
       height: '100px',
       borderRadius: '50%',
-      opacity: 1 - fadeOutProgress // Quick fade out
+      opacity: 1 - fadeOutProgress, // Quick fade out
+      backgroundColor: '#f0f0f0' // Match page background when dot
     });
 
     // Keep everything hidden
@@ -475,23 +489,27 @@ function updatePreviewPane(activeIndex) {
       return;
     }
     
-    // Fade transition with immediate image swap (no wait for onComplete)
+    // Sleek transition: fade + subtle scale
     gsap.to(elements.previewImg, {
       opacity: 0,
+      scale: 0.95,
       duration: CONFIG.transitions.imageFade,
+      ease: 'power2.inOut',
       onComplete: () => {
         // Update content
         elements.previewTitle.textContent = item.name;
         elements.previewDescription.textContent = item.description;
-        
+
         // Swap image and fade in immediately (image should be in browser cache)
         elements.previewImg.src = item.img;
         elements.previewImg.alt = `${item.name} project preview`;
-        
-        // Fade in immediately without waiting for load event (images are preloaded)
+
+        // Fade in with subtle scale (images are preloaded)
         gsap.to(elements.previewImg, {
           opacity: 1,
-          duration: CONFIG.transitions.imageFade
+          scale: 1,
+          duration: CONFIG.transitions.imageFade,
+          ease: 'power2.out'
         });
       }
     });
@@ -842,6 +860,9 @@ function init() {
   // Section headline is now part of spotlight and stays pinned
   // No fade animation needed - it stays visible throughout the spotlight section
 }
+
+// Force scroll to top on page load
+window.scrollTo(0, 0);
 
 // Start the application
 if (document.readyState === 'loading') {
