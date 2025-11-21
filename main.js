@@ -719,30 +719,30 @@ function createLogoScrollAnimation(initialLogoWidth, finalLogoWidth) {
 
 function applyLogoProgress(progress, initialWidth, finalWidth) {
   const currentWidth = gsap.utils.interpolate(initialWidth, finalWidth, progress);
-  
+
   // Clear the CSS animation so it doesn't interfere with GSAP
   if (progress > 0) {
     elements.logoContainer.style.animation = 'none';
   }
-  
+
   // Calculate final position in pixels (2rem)
   const remInPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
   const finalLeftPx = 2 * remInPx;
   const finalTopPx = 2 * remInPx;
-  
+
   // Interpolate the translate percentage from -50% (centered) to 0% (no offset)
   const translatePercent = gsap.utils.interpolate(-50, 0, progress);
-  
+
   // For positioning: start at 50% and end at the pixel value
   const leftValue = gsap.utils.interpolate(50, 0, progress);
   const topValue = gsap.utils.interpolate(50, 0, progress);
-  
+
   // Calculate the pixel offset needed
   // At progress 0: left is 50% with -50% xPercent, so we're centered
   // At progress 1: left is 0% with 0% xPercent, plus we need finalLeftPx offset
   const xOffset = gsap.utils.interpolate(0, finalLeftPx, progress);
   const yOffset = gsap.utils.interpolate(0, finalTopPx, progress);
-  
+
   gsap.set(elements.logoContainer, {
     left: `${leftValue}%`,
     top: `${topValue}%`,
@@ -752,10 +752,15 @@ function applyLogoProgress(progress, initialWidth, finalWidth) {
     y: yOffset,
     opacity: 1
   });
-  
+
   gsap.set(elements.animatedLogo, {
     width: `${currentWidth}px`
   });
+
+  // Update corner state for mouse interaction
+  if (typeof window.setLogoInCorner === 'function') {
+    window.setLogoInCorner(progress > 0.8);
+  }
 }
 
 function setLogoFinalState(initialWidth, finalWidth) {

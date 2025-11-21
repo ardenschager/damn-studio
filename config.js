@@ -28,7 +28,7 @@ const CONFIG = {
   // Logo settings
   logo: {
     cssAnimationDuration: 1200, // ms
-    initialWidth: 550,          // px - starting logo size
+    initialWidth: 1000,         // px - starting logo size (2x bigger!)
     finalWidthDesktop: 135,     // px
     finalWidthTablet: 110,      // px
     finalWidthMobile: 90,       // px

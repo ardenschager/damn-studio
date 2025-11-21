@@ -1,0 +1,14 @@
+{
+  "animation": {
+    "style": "flutter",
+    "comment": "Options: 'percolate' (bubble in from random positions) or 'flutter' (gentle drift in like falling leaves)"
+  },
+  "interaction": {
+    "enableMouseRepulsion": true,
+    "centerRadius": 400,
+    "centerForce": 25,
+    "cornerRadius": 200,
+    "cornerForce": 15,
+    "comment": "Mouse interaction settings. Radius is in pixels, force is displacement amount."
+  }
+}
