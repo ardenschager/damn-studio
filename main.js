@@ -8,12 +8,15 @@ gsap.registerPlugin(ScrollTrigger);
 // ============================================
 // Reset scroll position on page load/refresh
 // ============================================
+// Aggressive scroll reset to prevent browser scroll restoration
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
-window.addEventListener('beforeunload', () => {
-  window.scrollTo(0, 0);
-});
+
+// Force scroll to top immediately (as early as possible)
+window.scrollTo(0, 0);
+document.documentElement.scrollTop = 0;
+document.body.scrollTop = 0;
 
 // ============================================
 // DOM Elements & State
@@ -813,6 +816,11 @@ function setLogoFinalState(initialWidth, finalWidth) {
 // Main Initialization
 // ============================================
 function init() {
+  // Force scroll to top again in case browser tried to restore position
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+
   initializeDOMElements();
   initializeSmoothScrolling();
   createTitleElements();
@@ -876,10 +884,17 @@ function init() {
   
   // Section headline is now part of spotlight and stays pinned
   // No fade animation needed - it stays visible throughout the spotlight section
-}
 
-// Force scroll to top on page load
-window.scrollTo(0, 0);
+  // Final scroll reset after a short delay to catch any late browser scroll restoration
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    if (state.lenis) {
+      state.lenis.scrollTo(0, { immediate: true });
+    }
+  }, 100);
+}
 
 // Start the application
 if (document.readyState === 'loading') {
