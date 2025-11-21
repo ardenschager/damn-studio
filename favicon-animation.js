@@ -118,6 +118,11 @@
   function animateFavicon() {
     const canvas = createFaviconCanvas();
 
+    // Immediately draw and set the first frame (no delay)
+    drawLetter(canvas, letters[currentLetterIndex]);
+    updateFavicon(canvas);
+    currentLetterIndex = (currentLetterIndex + 1) % letters.length;
+
     function nextFrame() {
       // Get current letter
       const currentLetter = letters[currentLetterIndex];
@@ -135,8 +140,8 @@
       setTimeout(nextFrame, CYCLE_DURATION);
     }
 
-    // Start animation
-    nextFrame();
+    // Start animation loop after initial delay
+    setTimeout(nextFrame, CYCLE_DURATION);
   }
 
   // Initialize when DOM is ready
