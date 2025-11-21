@@ -294,6 +294,12 @@ function handleCircleMorph(progress) {
   if (entryMorphProgress <= 0.5) {
     const entryProgress = entryMorphProgress / 0.5;
 
+    // Stay invisible until 95% through Phase 1, then quick fade in (last 5%)
+    const fadeInStart = 0.95;
+    const fadeInProgress = entryProgress < fadeInStart
+      ? 0
+      : Math.min((entryProgress - fadeInStart) / 0.05, 1);
+
     // Simple right-to-left movement
     // Start position: offscreen to the right
     // End position: centered in preview-container
@@ -314,15 +320,15 @@ function handleCircleMorph(progress) {
     gsap.set(previewContainer, {
       y: currentY,
       x: currentX,
-      opacity: 1 // Make container visible
+      opacity: fadeInProgress // Quick fade in at end of Phase 1
     });
 
-    // Keep as circle, always visible so it flies in from right
+    // Keep as circle, fade in quickly right before morph
     gsap.set(previewImg, {
       width: '100px',
       height: '100px',
       borderRadius: '50%',
-      opacity: 1
+      opacity: fadeInProgress // Quick fade in at end of Phase 1
     });
 
     // Image and text stay hidden
@@ -423,37 +429,26 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
       borderRadius: `${currentBorderRadius}%`
     });
   }
-  // Phase 2: Move circle right and exit (0.6 to 1.0)
+  // Phase 2: Quick fade out of circle (0.6 to 1.0)
   else {
     const exitMoveProgress = (exitProgress - 0.6) / 0.4;
 
-    // Simple left-to-right exit
-    const startX = 0; // Start at center
-    // Container is already centered, so we move it relative to center
-    const endX = window.innerWidth * 0.6; // Exit offscreen right
-    const endY = 0; // Stay vertically centered
+    // VERY quick fade out - complete fade in first 5% of Phase 2
+    const fadeOutProgress = Math.min(exitMoveProgress / 0.05, 1);
 
-    // Smooth cubic easing for more deliberate movement
-    const t = exitMoveProgress;
-    const eased = t < 0.5
-      ? 4 * t * t * t
-      : 1 - Math.pow(-2 * t + 2, 3) / 2; // Ease in-out cubic (slower, smoother)
-
-    const currentX = startX + (endX - startX) * eased;
-    const currentY = endY;
-
+    // Keep position centered during fade out
     gsap.set(previewContainer, {
-      y: currentY,
-      x: currentX,
-      opacity: 1 // Keep visible during exit
+      y: 0,
+      x: 0,
+      opacity: 1 - fadeOutProgress // Quick fade out
     });
 
-    // Stay as circle
+    // Stay as circle and fade out quickly
     gsap.set(previewImg, {
       width: '100px',
       height: '100px',
       borderRadius: '50%',
-      opacity: 1 // Keep circle visible during exit
+      opacity: 1 - fadeOutProgress // Quick fade out
     });
 
     // Keep everything hidden
