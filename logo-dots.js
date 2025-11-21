@@ -106,20 +106,19 @@ async function initializeDotLogo() {
 
   console.log('✅ Logo container found, creating', DOT_POSITIONS.length, 'dots');
 
-  // Create each dot
+  // Create each dot - SIMPLE, NO ANIMATIONS YET
   DOT_POSITIONS.forEach((pos, index) => {
     const dotDiv = document.createElement('div');
     dotDiv.className = 'dot';
     dotDiv.dataset.index = index;
 
-    // Convert SVG coordinates to percentages (center the dot on its position)
-    const dotSizePercent = 9.146; // Width/height of dot as percentage
+    // Convert SVG coordinates to percentages
+    const dotSizePercent = 9.146;
     dotDiv.style.left = `${(pos.x / SVG_WIDTH) * 100 - (dotSizePercent / 2)}%`;
     dotDiv.style.top = `${(pos.y / SVG_HEIGHT) * 100 - (dotSizePercent / 2)}%`;
 
-    // Store original position for animations
-    dotDiv.dataset.originalX = pos.x;
-    dotDiv.dataset.originalY = pos.y;
+    // IMPORTANT: Make dots visible immediately for debugging
+    dotDiv.style.opacity = '1';
 
     // Create inline SVG
     dotDiv.innerHTML = `
@@ -130,20 +129,11 @@ async function initializeDotLogo() {
 
     logoContainer.appendChild(dotDiv);
     dotElements.push(dotDiv);
+
+    console.log(`Dot ${index}: left=${dotDiv.style.left}, top=${dotDiv.style.top}`);
   });
 
-  console.log('✅ Created', dotElements.length, 'dot elements');
-  console.log('🎨 Animation style:', logoConfig.animation.style);
-
-  // Animate all dots
-  dotElements.forEach((dotDiv, index) => {
-    // Choose animation style based on config
-    if (logoConfig.animation.style === 'percolate') {
-      animatePercolate(dotDiv, index);
-    } else {
-      animateFlutter(dotDiv, index);
-    }
-  });
+  console.log('✅ Created', dotElements.length, 'dot elements - ALL VISIBLE');
 
   // Setup mouse interaction
   setupMouseInteraction();

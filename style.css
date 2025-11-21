@@ -160,7 +160,7 @@ section.outro {
     /* Scale dots proportionally with logo - 30px at 328px width = 9.146% */
     width: 9.146%;
     aspect-ratio: 1 / 1; /* Maintain square */
-    opacity: 0;
+    /* opacity controlled by JS */
     will-change: transform, opacity;
     transform-origin: center center;
 }
