@@ -89,6 +89,13 @@ The site works at the intersections of spatial design, illustration, custom fabr
 
 ## Development Notes
 
+### Git Commit Protocol
+
+**IMPORTANT**: After every significant change or feature implementation:
+1. Test the changes work correctly
+2. Commit with `git add -A && git commit -m "descriptive message"`
+3. This creates restore points if something breaks
+
 ### Logo Configuration
 
 The animated DAMN logo can be customized via `logo-config.json`:
