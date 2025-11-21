@@ -106,7 +106,7 @@ async function initializeDotLogo() {
 
   console.log('✅ Logo container found, creating', DOT_POSITIONS.length, 'dots');
 
-  // Create each dot - SIMPLE, NO ANIMATIONS YET
+  // Create each dot
   DOT_POSITIONS.forEach((pos, index) => {
     const dotDiv = document.createElement('div');
     dotDiv.className = 'dot';
@@ -117,9 +117,6 @@ async function initializeDotLogo() {
     dotDiv.style.left = `${(pos.x / SVG_WIDTH) * 100 - (dotSizePercent / 2)}%`;
     dotDiv.style.top = `${(pos.y / SVG_HEIGHT) * 100 - (dotSizePercent / 2)}%`;
 
-    // IMPORTANT: Make dots visible immediately for debugging
-    dotDiv.style.opacity = '1';
-
     // Create inline SVG
     dotDiv.innerHTML = `
       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -129,15 +126,65 @@ async function initializeDotLogo() {
 
     logoContainer.appendChild(dotDiv);
     dotElements.push(dotDiv);
-
-    console.log(`Dot ${index}: left=${dotDiv.style.left}, top=${dotDiv.style.top}`);
   });
 
-  console.log('✅ Created', dotElements.length, 'dot elements - ALL VISIBLE');
+  console.log('✅ Created', dotElements.length, 'dot elements');
 
-  // Setup mouse interaction
-  setupMouseInteraction();
+  // Animate dots converging from all directions
+  animateConvergence();
+
   console.log('✅ Logo initialization complete!');
+}
+
+// Convergence animation - dots come from all directions
+function animateConvergence() {
+  dotElements.forEach((dot, index) => {
+    // Random angle from 0 to 360 degrees
+    const angle = Math.random() * Math.PI * 2;
+
+    // Random distance from center - further out for more dramatic effect
+    const distance = Math.random() * 400 + 300; // 300-700px from center
+
+    // Calculate starting position based on angle
+    const startX = Math.cos(angle) * distance;
+    const startY = Math.sin(angle) * distance;
+
+    // Random rotation for more organic feel
+    const startRotation = (Math.random() - 0.5) * 180;
+
+    // Staggered delay with some randomness
+    const baseDelay = index * 0.015; // Sequential component
+    const randomDelay = Math.random() * 0.4; // Random component
+    const delay = baseDelay + randomDelay;
+
+    // Set initial state
+    gsap.set(dot, {
+      x: startX,
+      y: startY,
+      rotation: startRotation,
+      scale: 0.3,
+      opacity: 0
+    });
+
+    // Animate to final position
+    gsap.to(dot, {
+      x: 0,
+      y: 0,
+      rotation: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 1.5,
+      delay: delay,
+      ease: 'power2.out',
+      onComplete: () => {
+        // Enable mouse interaction after last dot finishes
+        if (index === dotElements.length - 1) {
+          setupMouseInteraction();
+          console.log('✨ Convergence complete - mouse interaction enabled');
+        }
+      }
+    });
+  });
 }
 
 // Percolate animation (bubble in from random positions)
