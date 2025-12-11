@@ -32,7 +32,7 @@ The site works at the intersections of spatial design, illustration, custom fabr
 
 ## Team Members
 
-- **Daniel Toretski** - Creative Direction
+- **Daniel Toretsky** - Spatial Design
 - **Nicole Fox** - Illustration and Design
 - **Matías Piña** - Interactive Media
 - **Arden Schager** - Software and Sound
