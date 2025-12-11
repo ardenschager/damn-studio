@@ -63,27 +63,37 @@ const CONFIG = {
 const SPOTLIGHT_ITEMS = [
   {
     name: "MIT Museum",
-    img: "assets/img01.jpg",
-    description: "Developed spatial and interactive systems for exhibitions exploring MIT's history of innovation, from adaptive artifact displays to large-scale media installations.",
+    img: "assets/mit-museum.jpg",
+    description: "Daniel designed this exhibit highlighting MIT's legacy of invention through a reconfigurable display of hundreds of artifacts.",
+    artist: "Daniel Toretsky",
+    credits: "Exhibit Design – Studio Joseph, Interactive Media – Bluecadet, Graphic Design – Pentagram, Lighting Design – Tillotson, Fabrication – Kubik Maltbie"
   },
   {
     name: "Inter NYC",
-    img: "assets/img02.jpg",
-    description: "Designed and developed interactive installations where visitors shape constellations and influence the life and death of stars through movement, transforming cosmic phenomena into responsive, participatory experiences.",
+    img: "assets/inter-nyc.jpg",
+    description: "Matías developed this installation inviting visitors to interact with cosmic portals using gesture-controlled technology.",
+    artist: "Matías Piña",
+    credits: "Collaboration – Tiago Aragona"
   },
   {
     name: "AMNH",
-    img: "assets/img03.jpg",
-    description: "Through exhibition design, visual identity, and spatial graphics, we've helped shape immersive experiences that connect visitors to stories of nature, culture, and technology with clarity and emotional depth.",
+    img: "assets/amnh.jpg",
+    description: "Nicole designed this immersive exhibition inviting visitors to encounter life-size sharks through games, models, and interactive media.",
+    artist: "Nicole Fox",
+    credits: "Exhibit Design – American Museum of Natural History Exhibitions, Photo – Denis Finnin"
   },
   {
     name: "Grey Area",
-    img: "assets/img03.jpg", // Reusing img03 for now
-    description: "Created an immersive installation and web piece where visitors encounter bioluminescent beings communicating through shifting light patterns, transforming the uncertainty of translation into a space of curiosity and wonder.",
+    img: "assets/grey-area.jpg",
+    description: "Arden coded this digital installation immersing viewers in a luminous dialogue with imagined bioluminescent life forms.",
+    artist: "Arden Schager",
+    credits: "Installation Design – Gray Area Foundation for the Arts, Coding – three.js"
   },
   {
     name: "Microsoft Garage",
-    img: "assets/img02.jpg", // Reusing img02 for now
-    description: "Created an interactive installation where visitors explore shifting AI-generated landscapes that reflect on extraction, displacement, and the fading of cultural specificity through distance and transformation.",
+    img: "assets/microsoft-garage.jpg",
+    description: "Matías built this interactive installation where visitors navigate AI-generated landscapes from Chile and Argentina, exploring how extraction and transformation erase cultural specificity.",
+    artist: "Matías Piña",
+    credits: "Collaboration – Tiago Aragona, Parsons School of Design MFA Thesis"
   }
 ];

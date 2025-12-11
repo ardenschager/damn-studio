@@ -1,6 +1,6 @@
 # Node modules
 node_modules/
-
+new-data/
 # Environment files
 .env
 .env.local

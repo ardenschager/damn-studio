@@ -306,7 +306,7 @@ function handleCircleMorph(progress) {
     gsap.set(previewImg, {
       width: '600px',
       height: '400px',
-      borderRadius: '1.67%',
+      borderRadius: '3.33%',
       opacity: 1,
       backgroundColor: '#000'
     });
@@ -314,7 +314,7 @@ function handleCircleMorph(progress) {
       opacity: 1,
       width: '600px',
       height: '400px',
-      borderRadius: '1.67%'
+      borderRadius: '3.33%'
     });
     gsap.set(previewText, { opacity: 1 });
     return; // Don't interfere with preview pane logic
@@ -387,8 +387,10 @@ function handleCircleMorph(progress) {
     const currentWidth = gsap.utils.interpolate(startWidth, endWidth, morphShapeProgress);
     const currentHeight = gsap.utils.interpolate(startHeight, endHeight, morphShapeProgress);
     
-    // Morph border radius (50% to 10px)
-    const currentBorderRadius = gsap.utils.interpolate(50, 1.67, morphShapeProgress); // 10px / 600px * 100 = 1.67%
+    // Morph border radius - from circle (50% of small circle) to modest rounded corners (20px)
+    const startRadius = 50; // 50% of 100px circle = 50px radius
+    const endRadius = 3.33; // 20px / 600px * 100 = 3.33%
+    const currentBorderRadius = gsap.utils.interpolate(startRadius, endRadius, morphShapeProgress);
 
     gsap.set(previewImg, {
       width: `${currentWidth}px`,
@@ -443,8 +445,8 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
     const currentWidth = gsap.utils.interpolate(startWidth, endWidth, morphShapeProgress);
     const currentHeight = gsap.utils.interpolate(startHeight, endHeight, morphShapeProgress);
     
-    // Reverse border radius (1.67% back to 50%)
-    const currentBorderRadius = gsap.utils.interpolate(1.67, 50, morphShapeProgress);
+    // Reverse border radius (3.33% back to 50%)
+    const currentBorderRadius = gsap.utils.interpolate(3.33, 50, morphShapeProgress);
     
     gsap.set(previewImg, {
       width: `${currentWidth}px`,
