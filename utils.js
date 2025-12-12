@@ -37,18 +37,27 @@ function isTablet() {
 
 // Preload images with Promise support
 function preloadImages(items) {
-  const imagePromises = items.map((item) => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = () => {
-        console.warn(`Failed to preload image: ${item.img}`);
-        resolve(); // Resolve even on error to not block
-      };
-      img.src = item.img;
+  const imagePromises = [];
+
+  items.forEach((item) => {
+    // Handle both old format (item.img) and new format (item.images array)
+    const imageSources = item.images || [item.img];
+
+    imageSources.forEach((imgSrc) => {
+      imagePromises.push(
+        new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve();
+          img.onerror = () => {
+            console.warn(`Failed to preload image: ${imgSrc}`);
+            resolve(); // Resolve even on error to not block
+          };
+          img.src = imgSrc;
+        })
+      );
     });
   });
-  
+
   return Promise.all(imagePromises);
 }
 

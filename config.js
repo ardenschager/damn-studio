@@ -63,35 +63,57 @@ const CONFIG = {
 const SPOTLIGHT_ITEMS = [
   {
     name: "MIT Museum",
-    img: "assets/mit-museum.jpg",
+    images: [
+      "assets/projects/mit-museum/mit-1.jpg",
+      "assets/projects/mit-museum/mit-2.jpg"
+    ],
     description: "Daniel designed this exhibit highlighting MIT's legacy of invention through a reconfigurable display of hundreds of artifacts.",
     artist: "Daniel Toretsky",
     credits: "Exhibit Design – Studio Joseph, Interactive Media – Bluecadet, Graphic Design – Pentagram, Lighting Design – Tillotson, Fabrication – Kubik Maltbie"
   },
   {
     name: "Inter NYC",
-    img: "assets/inter-nyc.jpg",
+    images: [
+      "assets/projects/inter-nyc/inter-1.jpg",
+      "assets/projects/inter-nyc/inter-2.jpg",
+      "assets/projects/inter-nyc/inter-3.jpg",
+      "assets/projects/inter-nyc/inter-4.jpg"
+    ],
     description: "Matías developed this installation inviting visitors to interact with cosmic portals using gesture-controlled technology.",
     artist: "Matías Piña",
     credits: "Collaboration – Tiago Aragona"
   },
   {
-    name: "AMNH",
-    img: "assets/amnh.jpg",
+    name: "Sharks",
+    images: [
+      "assets/projects/amnh-sharks/sharks-1.jpg",
+      "assets/projects/amnh-sharks/sharks-2.jpg",
+      "assets/projects/amnh-sharks/sharks-3.jpg",
+      "assets/projects/amnh-sharks/sharks-4.jpg"
+    ],
     description: "Nicole designed this immersive exhibition inviting visitors to encounter life-size sharks through games, models, and interactive media.",
     artist: "Nicole Fox",
     credits: "Exhibit Design – American Museum of Natural History Exhibitions, Photo – Denis Finnin"
   },
   {
     name: "Grey Area",
-    img: "assets/grey-area.jpg",
+    images: [
+      "assets/projects/grey-area/grey-1.jpg",
+      "assets/projects/grey-area/grey-2.jpg",
+      "assets/projects/grey-area/grey-3.jpg"
+    ],
     description: "Arden coded this digital installation immersing viewers in a luminous dialogue with imagined bioluminescent life forms.",
     artist: "Arden Schager",
     credits: "Installation Design – Gray Area Foundation for the Arts, Coding – three.js"
   },
   {
-    name: "Microsoft Garage",
-    img: "assets/microsoft-garage.jpg",
+    name: "Artificial Us",
+    images: [
+      "assets/projects/artificial-us/artificial-1.jpg",
+      "assets/projects/artificial-us/artificial-2.jpg",
+      "assets/projects/artificial-us/artificial-3.jpg",
+      "assets/projects/artificial-us/artificial-4.jpg"
+    ],
     description: "Matías built this interactive installation where visitors navigate AI-generated landscapes from Chile and Argentina, exploring how extraction and transformation erase cultural specificity.",
     artist: "Matías Piña",
     credits: "Collaboration – Tiago Aragona, Parsons School of Design MFA Thesis"

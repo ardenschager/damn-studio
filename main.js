@@ -24,6 +24,7 @@ document.body.scrollTop = 0;
 let elements = {};
 let state = {
   currentActiveIndex: 0,
+  currentImageIndices: {}, // Track current image index for each project
   lenis: null,
   titleElements: null
 };
@@ -35,12 +36,35 @@ function initializeDOMElements() {
   elements = {
     titlesContainer: document.querySelector('.spotlight-titles'),
     previewImg: document.querySelector('.preview-img img'),
+    previewImgContainer: document.querySelector('.preview-img'),
     previewTitle: document.querySelector('.preview-title'),
     previewDescription: document.querySelector('.preview-description'),
     logoContainer: document.querySelector('.logo-container'),
     animatedLogo: document.querySelector('.animated-logo'),
-    previewContainer: document.querySelector('.preview-container')
+    previewContainer: document.querySelector('.preview-container'),
+    navLeft: document.querySelector('.image-nav-left'),
+    navRight: document.querySelector('.image-nav-right')
   };
+
+  // Initialize image indices for all projects
+  SPOTLIGHT_ITEMS.forEach((item, index) => {
+    state.currentImageIndices[index] = 0;
+  });
+
+  // Add click handlers for navigation arrows
+  if (elements.navLeft) {
+    elements.navLeft.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navigateImage(-1);
+    });
+  }
+
+  if (elements.navRight) {
+    elements.navRight.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navigateImage(1);
+    });
+  }
 }
 
 function initializeSmoothScrolling() {
@@ -496,13 +520,75 @@ function handleCircleExit(exitProgress, previewImg, previewText, previewContaine
 // ============================================
 // Preview Pane
 // ============================================
+function navigateImage(direction) {
+  if (state.currentActiveIndex === -1) return;
+
+  const item = SPOTLIGHT_ITEMS[state.currentActiveIndex];
+  if (!item || !item.images || item.images.length <= 1) return;
+
+  const currentImageIndex = state.currentImageIndices[state.currentActiveIndex];
+  let newImageIndex = currentImageIndex + direction;
+
+  // Wrap around
+  if (newImageIndex < 0) {
+    newImageIndex = item.images.length - 1;
+  } else if (newImageIndex >= item.images.length) {
+    newImageIndex = 0;
+  }
+
+  state.currentImageIndices[state.currentActiveIndex] = newImageIndex;
+  updateImage(state.currentActiveIndex, newImageIndex);
+}
+
+function updateImage(projectIndex, imageIndex) {
+  const item = SPOTLIGHT_ITEMS[projectIndex];
+  if (!item || !item.images || !item.images[imageIndex]) return;
+
+  const newImageSrc = item.images[imageIndex];
+
+  // Check if this is already the current image
+  if (elements.previewImg.src.endsWith(newImageSrc)) {
+    return;
+  }
+
+  // Sleek transition: fade + subtle scale
+  gsap.to(elements.previewImg, {
+    opacity: 0,
+    scale: 0.95,
+    duration: CONFIG.transitions.imageFade,
+    ease: 'power2.inOut',
+    onComplete: () => {
+      // Swap image
+      elements.previewImg.src = newImageSrc;
+      elements.previewImg.alt = `${item.name} project preview - Image ${imageIndex + 1}`;
+
+      // Fade in with subtle scale
+      gsap.to(elements.previewImg, {
+        opacity: 1,
+        scale: 1,
+        duration: CONFIG.transitions.imageFade,
+        ease: 'power2.out'
+      });
+    }
+  });
+}
+
 function updatePreviewPane(activeIndex) {
   if (activeIndex !== -1 && activeIndex !== state.currentActiveIndex) {
     const item = SPOTLIGHT_ITEMS[activeIndex];
-    
+
+    // Get the current image index for this project (or reset to 0)
+    const imageIndex = state.currentImageIndices[activeIndex] || 0;
+    const currentImageSrc = item.images ? item.images[imageIndex] : item.img;
+
     // Check if image is already loaded/cached
-    const isImageCached = elements.previewImg.src.endsWith(item.img);
-    
+    const isImageCached = elements.previewImg.src.endsWith(currentImageSrc);
+
+    // Update image count attribute for CSS
+    if (item.images) {
+      elements.previewImgContainer.setAttribute('data-image-count', item.images.length);
+    }
+
     if (isImageCached) {
       // Image is already showing, no need to transition
       elements.previewTitle.textContent = item.name;
@@ -510,7 +596,7 @@ function updatePreviewPane(activeIndex) {
       state.currentActiveIndex = activeIndex;
       return;
     }
-    
+
     // Sleek transition: fade + subtle scale
     gsap.to(elements.previewImg, {
       opacity: 0,
@@ -523,7 +609,7 @@ function updatePreviewPane(activeIndex) {
         elements.previewDescription.textContent = item.description;
 
         // Swap image and fade in immediately (image should be in browser cache)
-        elements.previewImg.src = item.img;
+        elements.previewImg.src = currentImageSrc;
         elements.previewImg.alt = `${item.name} project preview`;
 
         // Fade in with subtle scale (images are preloaded)
@@ -535,7 +621,7 @@ function updatePreviewPane(activeIndex) {
         });
       }
     });
-    
+
     state.currentActiveIndex = activeIndex;
   }
 }
@@ -831,27 +917,33 @@ function init() {
   // Set initial preview content and hide it (animation will reveal it)
   if (SPOTLIGHT_ITEMS.length > 0) {
     const firstItem = SPOTLIGHT_ITEMS[0];
-    elements.previewImg.src = firstItem.img;
+    const firstImageSrc = firstItem.images ? firstItem.images[0] : firstItem.img;
+    elements.previewImg.src = firstImageSrc;
     elements.previewImg.alt = `${firstItem.name} project preview`;
     elements.previewTitle.textContent = firstItem.name;
     elements.previewDescription.textContent = firstItem.description;
-    
+
+    // Set image count attribute for CSS
+    if (firstItem.images) {
+      elements.previewImgContainer.setAttribute('data-image-count', firstItem.images.length);
+    }
+
     // Set initial hidden state - will be revealed by animation
     const circleSize = 100;
     const startY = window.innerHeight - circleSize - 20;
     const startX = (window.innerWidth * 0.5) - circleSize - 20;
-    
+
     gsap.set(elements.previewContainer, {
       y: startY,
       x: startX
     });
-    
+
     gsap.set(elements.previewImg, {
       width: '100px',
       height: '100px',
       borderRadius: '50%'
     });
-    
+
     gsap.set(elements.previewImg.querySelector('img'), { opacity: 0 });
     gsap.set(document.querySelector('.preview-text'), { opacity: 0 });
   }
@@ -867,14 +959,18 @@ function init() {
   const imageCache = document.createElement('div');
   imageCache.style.cssText = 'position: absolute; left: -9999px; visibility: hidden; width: 1px; height: 1px; overflow: hidden;';
   SPOTLIGHT_ITEMS.forEach(item => {
-    const img = document.createElement('img');
-    img.src = item.img;
-    img.loading = 'eager'; // Prioritize loading
-    img.style.cssText = 'position: absolute; width: 1px; height: 1px;';
-    imageCache.appendChild(img);
+    // Handle both old format (item.img) and new format (item.images array)
+    const imageSources = item.images || [item.img];
+    imageSources.forEach(imgSrc => {
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.loading = 'eager'; // Prioritize loading
+      img.style.cssText = 'position: absolute; width: 1px; height: 1px;';
+      imageCache.appendChild(img);
+    });
   });
   document.body.appendChild(imageCache);
-  
+
   // Also run the Promise-based preload for logging
   preloadImages(SPOTLIGHT_ITEMS).then(() => {
     console.log('Images preloaded and cached');
