@@ -6,8 +6,8 @@
 
 @font-face {
     font-family: 'TINY5x3';
-    src: url('assets/fonts/TINY5x3-160.woff2') format('woff2'),
-         url('assets/fonts/TINY5x3-160.woff') format('woff');
+    src: url('assets/fonts/TINY5x3-180.woff2') format('woff2'),
+         url('assets/fonts/TINY5x3-180.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
