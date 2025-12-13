@@ -29,6 +29,7 @@ Thumbs.db
 
 # Optimized images (keep originals in git)
 assets/optimized/
+tinyfonts-master/
 
 # Backup files
 assets/originals/
