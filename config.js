@@ -84,7 +84,7 @@ const SPOTLIGHT_ITEMS = [
     credits: "Collaboration – Tiago Aragona"
   },
   {
-    name: "Sharks",
+    name: "AMNH",
     images: [
       "assets/projects/amnh-sharks/sharks-1.jpg",
       "assets/projects/amnh-sharks/sharks-2.jpg",

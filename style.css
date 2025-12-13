@@ -295,41 +295,66 @@ section.outro {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.8);
+    background: transparent;
     border: none;
-    font-size: 2.5rem;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     opacity: 0;
     transition: all 0.3s ease;
     z-index: 10;
-    color: #333;
-    font-weight: 300;
-    line-height: 1;
     padding: 0;
     user-select: none;
+    width: 40px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.image-nav-arrow:hover {
-    background: rgba(255, 255, 255, 0.95);
-    transform: translateY(-50%) scale(1.1);
+.image-nav-arrow::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid rgba(255, 255, 255, 0.9);
+    border-right: 2px solid rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
 }
 
-.image-nav-arrow:active {
-    transform: translateY(-50%) scale(0.95);
+.image-nav-left::before {
+    transform: rotate(-135deg);
+    left: 50%;
+    margin-left: 2px;
+}
+
+.image-nav-right::before {
+    transform: rotate(45deg);
+    right: 50%;
+    margin-right: 2px;
+}
+
+.image-nav-arrow:hover::before {
+    border-color: rgba(255, 255, 255, 1);
+    transform: scale(1.2) rotate(-135deg);
+}
+
+.image-nav-right:hover::before {
+    transform: scale(1.2) rotate(45deg);
+}
+
+.image-nav-arrow:active::before {
+    transform: scale(0.9) rotate(-135deg);
+}
+
+.image-nav-right:active::before {
+    transform: scale(0.9) rotate(45deg);
 }
 
 .image-nav-left {
-    left: 15px;
+    left: 10px;
 }
 
 .image-nav-right {
-    right: 15px;
+    right: 10px;
 }
 
 .preview-img:hover .image-nav-arrow {
