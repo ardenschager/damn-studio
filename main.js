@@ -246,10 +246,11 @@ function createMobileSpotlightAnimation() {
   SPOTLIGHT_ITEMS.forEach((item, index) => {
     const projectSection = document.createElement('div');
     projectSection.className = 'mobile-project-item';
+    const firstImage = item.images ? item.images[0] : item.img;
     projectSection.innerHTML = `
       <div class="mobile-project-content">
         <div class="mobile-project-img">
-          <img src="${item.img}" alt="${item.name} project" />
+          <img src="${firstImage}" alt="${item.name} project" />
         </div>
         <div class="mobile-project-info">
           <h2 class="mobile-project-title">${item.name}</h2>
@@ -257,7 +258,7 @@ function createMobileSpotlightAnimation() {
         </div>
       </div>
     `;
-    
+
     container.appendChild(projectSection);
     
     // Simple fade-in animation for each project
